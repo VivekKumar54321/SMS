@@ -10,8 +10,8 @@ using StudentManagement.Database;
 namespace StudentManagement.Migrations
 {
     [DbContext(typeof(StudentContext))]
-    [Migration("20200305062106_first")]
-    partial class first
+    [Migration("20200305085514_new")]
+    partial class @new
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

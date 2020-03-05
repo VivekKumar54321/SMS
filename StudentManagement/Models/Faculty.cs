@@ -9,7 +9,7 @@ namespace StudentManagement.Models
 {
     public class Faculty :BaseEntity
     {
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Invalid Name")]
+
         public string Name { get; set; }
 
 

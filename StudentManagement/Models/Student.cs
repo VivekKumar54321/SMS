@@ -9,12 +9,11 @@ namespace StudentManagement.Models
 {
     public class Student: BaseEntity
     {
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Invalid Name")]
-  
+       
         public string Name { get; set; }
 
 
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Invalid FatherName")]
+      
         public string FatherName { get; set; }
         public string Gender { get; set; }
 

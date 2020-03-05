@@ -9,7 +9,7 @@ namespace StudentManagement.Models
 {
     public class Payment : BaseEntity
     {
-		[RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Invalid Name")]
+	
 		public string Type { get; set; }
 
 	
