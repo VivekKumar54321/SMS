@@ -24,8 +24,10 @@ namespace StudentManagement.Controllers
         public async Task<IActionResult> Index()
         {
             var studentContext = _context.Registration.Include(r => r.Faculty).Include(r => r.Payment).Include(r => r.Student);
+           
 
-          return View(await studentContext.ToListAsync());
+
+            return View(await studentContext.ToListAsync());
         }
 
         // GET: Registrations/Details/5

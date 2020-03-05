@@ -20,9 +20,83 @@ namespace StudentManagement.Controllers
         }
 
         // GET: Students
-        public async Task<IActionResult> Index()
+        public ViewResult Index(string sortOrder, string searchString)
         {
-            return View(await _context.Student.ToListAsync());
+            var studentContext = _context.Student.ToList();
+
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.FatherNameSortParm = sortOrder == "fname_asc" ? "fname_desc" : "fname_asc";
+            ViewBag.Gender = sortOrder == "gender_asc" ? "gender_desc" : "gender_asc";
+            ViewBag.Address = sortOrder == "addressname_asc" ? "addressname_desc" : "addressname_asc";
+            ViewBag.Email = sortOrder == "emailname_asc" ? "emailname_desc" : "emailname_asc";
+            ViewBag.PhoneNo = sortOrder == "phonenoname_asc" ? "phonenoname_desc" : "phonenoname_asc";
+            ViewBag.DOB = sortOrder == "dob_asc" ? "dob_desc" : "dob_asc";
+
+            var students = from s in studentContext
+                           select s;
+
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                students = students.Where(s => s.Name.Contains(searchString)
+                                       || s.FatherName.Contains(searchString)
+                                    || s.Address.Contains(searchString)
+                                       || s.Gender.Contains(searchString)
+                                       || s.PhoneNo.ToString().Contains(searchString)
+                                       || s.DOB.ToString().Contains(searchString)
+                                    
+                                       || s.Email.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.Name);
+                    break;
+                case "fname_desc":
+                    students = students.OrderByDescending(s => s.FatherName);
+                    break;
+                case "fname_asc":
+                    students = students.OrderBy(s => s.FatherName);
+                    break;
+                case "gender_desc":
+                    students = students.OrderByDescending(s => s.Gender);
+                    break;
+                case "gender_asc":
+                    students = students.OrderBy(s => s.Gender);
+                    break;
+                case "addressname_desc":
+                    students = students.OrderByDescending(s => s.Address);
+                    break;
+                case "addressname_asc":
+                    students = students.OrderBy(s => s.Address);
+                    break;
+                case "emailname_desc":
+                    students = students.OrderByDescending(s => s.Email);
+                    break;
+                case "emailname_asc":
+                    students = students.OrderBy(s => s.Email);
+                    break;
+                case "phonenoname_desc":
+                    students = students.OrderByDescending(s => s.PhoneNo);
+                    break;
+                case "phonenoname_asc":
+                    students = students.OrderBy(s => s.PhoneNo);
+                    break;
+                case "dobname_desc":
+                    students = students.OrderByDescending(s => s.DOB);
+                    break;
+                case "dobname_asc":
+                    students = students.OrderBy(s => s.DOB);
+                    break;
+       
+
+                default:
+                    students = students.OrderBy(s => s.Name);
+                    break;
+            }
+            return View(students);
         }
 
         // GET: Students/Details/5
