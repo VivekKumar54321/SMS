@@ -20,20 +20,20 @@
         <input type="submit" value="Ok" />
     </p>
 }
-<table class="table">
-    <thead>
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
         <tr>
             <th>
-                @Html.ActionLink("Student Name", "Index", new { sortOrder = ViewBag.StudentName })
+                @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.StudentName })
                 
             </th>
             <th>
 
-                @Html.ActionLink("Student Address", "Index", new { sortOrder = ViewBag.StudentAddress })
+                @Html.ActionLink("Address", "Index", new { sortOrder = ViewBag.StudentAddress })
          
             </th>
             <th>
-                @Html.ActionLink("Student PhoneNo", "Index", new { sortOrder = ViewBag.StudentPhoneNo })
+                @Html.ActionLink("PhoneNo", "Index", new { sortOrder = ViewBag.StudentPhoneNo })
           
             </th>
             <th>
@@ -83,9 +83,9 @@
                     @Html.DisplayFor(modelItem => item.IssuedDate)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" class="btn btn-outline-primary" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" class="btn btn-outline-success" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" class="btn btn-outline-danger" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
