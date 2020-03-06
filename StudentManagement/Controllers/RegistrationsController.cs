@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using StudentManagement.Database;
 using StudentManagement.Models;
+using StudentManagement.Pagination;
 using StudentManagement.ViewModel;
 
 namespace StudentManagement.Controllers
@@ -21,7 +22,11 @@ namespace StudentManagement.Controllers
         }
 
         // GET: Registrations
-        public ViewResult  Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(
+                                                string sortOrder,
+                                                string currentFilter,
+                                                string searchString,
+                                                int? pageNumber)
         {
 
 
@@ -38,7 +43,20 @@ namespace StudentManagement.Controllers
                  ViewBag.FacultyName = sortOrder == "fname_asc" ? "fname_desc" : "fname_asc";
                   ViewBag.IssuedDate = sortOrder == "date_asc" ? "date_desc" : "date_asc";
 
-                var students = from s in studentContext
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+
+            var students = from s in studentContext
                                select s;
 
 
@@ -99,7 +117,12 @@ namespace StudentManagement.Controllers
                         students = students.OrderBy(s => s.Student.Name);
                         break;
                 }
-                return View(students);
+
+            int pageSize = 3;
+
+
+            return View(await PaginatedList<Registration>.CreateAsync(students.AsNoTracking(), pageNumber ?? 1, pageSize));
+         //   return View(students);
             
          //   return View(await studentContext.ToListAsync());
         }
