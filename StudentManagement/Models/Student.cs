@@ -12,13 +12,11 @@ namespace StudentManagement.Models
        
         public string Name { get; set; }
 
-
-      
         public string FatherName { get; set; }
+
         public string Gender { get; set; }
 
         public string Address { get; set; }
-
 
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
@@ -26,7 +24,6 @@ namespace StudentManagement.Models
 
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Invalid Phone number")]
-
         public int PhoneNo { get; set; }
 
 

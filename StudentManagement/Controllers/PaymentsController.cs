@@ -20,9 +20,44 @@ namespace StudentManagement.Controllers
         }
 
         // GET: Payments
-        public async Task<IActionResult> Index()
+        public ViewResult Index(string sortOrder, string searchString)
         {
-            return View(await _context.Payment.ToListAsync());
+            var paymentContext = _context.Payment.ToList();
+
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.PaymentType = sortOrder == "type_asc" ? "type_desc" : "type_asc";
+            ViewBag.PaymentAmount = sortOrder == "amt_asc" ? "amt_desc" : "amt_asc";
+
+            var payments = from s in paymentContext
+                           select s;
+
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                payments = payments.Where(s =>   s.Amount.ToString().Contains(searchString)
+                                           || s.Type.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "type_desc":
+                    payments = payments.OrderByDescending(s => s.Type);
+                    break;
+                case "type_asc":
+                    payments = payments.OrderBy(s => s.Type);
+                    break;
+                case "amt_desc":
+                    payments = payments.OrderByDescending(s => s.Amount);
+                    break;
+                
+                default:
+                    payments = payments.OrderBy(s => s.Amount);
+                    break;
+            }
+            return View(payments);
+      
+           // return View(await _context.Payment.ToListAsync());
         }
 
         // GET: Payments/Details/5

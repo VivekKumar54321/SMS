@@ -20,9 +20,38 @@ namespace StudentManagement.Controllers
         }
 
         // GET: Faculties
-        public async Task<IActionResult> Index()
+        public ViewResult Index(string sortOrder, string searchString)
         {
-            return View(await _context.Faculty.ToListAsync());
+            var facultyContext = _context.Faculty.ToList();
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.FacultyName = sortOrder == "name_asc" ? "name_desc" : "name_asc";
+       
+
+            var faculties = from s in facultyContext
+                            select s;
+
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                faculties = faculties.Where(s => s.Name.Contains(searchString));
+                                         
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    faculties = faculties.OrderByDescending(s => s.Name);
+                    break;
+              
+
+                default:
+                    faculties = faculties.OrderBy(s => s.Name);
+                    break;
+            }
+            return View(faculties);
+
+            //return View(await _context.Faculty.ToListAsync());
         }
 
         // GET: Faculties/Details/5

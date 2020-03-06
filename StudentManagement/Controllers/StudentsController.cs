@@ -42,11 +42,10 @@ namespace StudentManagement.Controllers
             {
                 students = students.Where(s => s.Name.Contains(searchString)
                                        || s.FatherName.Contains(searchString)
-                                    || s.Address.Contains(searchString)
+                                       || s.Address.Contains(searchString)
                                        || s.Gender.Contains(searchString)
                                        || s.PhoneNo.ToString().Contains(searchString)
                                        || s.DOB.ToString().Contains(searchString)
-                                    
                                        || s.Email.Contains(searchString));
             }
             switch (sortOrder)
@@ -84,10 +83,10 @@ namespace StudentManagement.Controllers
                 case "phonenoname_asc":
                     students = students.OrderBy(s => s.PhoneNo);
                     break;
-                case "dobname_desc":
+                case "dob_desc":
                     students = students.OrderByDescending(s => s.DOB);
                     break;
-                case "dobname_asc":
+                case "dob_asc":
                     students = students.OrderBy(s => s.DOB);
                     break;
        

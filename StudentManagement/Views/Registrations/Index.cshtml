@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<StudentManagement.Models.Registration>
-
+@{
+    ViewBag.Title = "Registrations";
+}
 @{
     ViewData["Title"] = "Index";
 }
@@ -9,29 +11,46 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+
+@using (Html.BeginForm("Index", "Registrations"))
+{
+    <p>
+        Search : @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Ok" />
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
             <th>
-               Student Name
+                @Html.ActionLink("Student Name", "Index", new { sortOrder = ViewBag.StudentName })
+                
             </th>
             <th>
-                Student Address
+
+                @Html.ActionLink("Student Address", "Index", new { sortOrder = ViewBag.StudentAddress })
+         
             </th>
             <th>
-               Student PhoneNo
+                @Html.ActionLink("Student PhoneNo", "Index", new { sortOrder = ViewBag.StudentPhoneNo })
+          
             </th>
             <th>
-            Payment Type
+                @Html.ActionLink("PaymentType", "Index", new { sortOrder = ViewBag.PaymentType })
+                
             </th>
             <th>
-                Payment Amount          
+                @Html.ActionLink("PaymentAmount", "Index", new { sortOrder = ViewBag.PaymentAmount })
+             
             </th>
             <th>
-              Faculty Name
+                @Html.ActionLink("FacultyName", "Index", new { sortOrder = ViewBag.FacultyName })
+            
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IssuedDate)
+                @Html.ActionLink("Issued Date", "Index", new { sortOrder = ViewBag.IssuedDate })
+                @*@Html.DisplayNameFor(model => model.IssuedDate)*@
             </th>
             <th></th>
         </tr>
@@ -40,7 +59,7 @@
         @foreach (var item in Model)
         {
             <tr>
-           
+
                 <td>
                     @Html.DisplayFor(modelItem => item.Student.Name)
                 </td>
@@ -69,6 +88,6 @@
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
-            }
-        </tbody>
+        }
+    </tbody>
 </table>

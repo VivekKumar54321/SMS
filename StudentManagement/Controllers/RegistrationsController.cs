@@ -21,13 +21,87 @@ namespace StudentManagement.Controllers
         }
 
         // GET: Registrations
-        public async Task<IActionResult> Index()
+        public ViewResult  Index(string sortOrder, string searchString)
         {
+
+
             var studentContext = _context.Registration.Include(r => r.Faculty).Include(r => r.Payment).Include(r => r.Student);
-           
+   
 
 
-            return View(await studentContext.ToListAsync());
+                 ViewBag.CurrentSort = sortOrder;
+                 ViewBag.StudentName = string.IsNullOrEmpty(sortOrder) ? "studentname_desc" : "";
+                 ViewBag.StudentAddress = sortOrder == "addressname_asc" ? "addressname_desc" : "addressname_asc";
+                  ViewBag.StudentPhoneNo = sortOrder == "phonenoname_asc" ? "phonenoname_desc" : "phonenoname_asc";
+                 ViewBag.PaymentType = sortOrder == "type_asc" ? "type_desc" : "type_asc";
+                 ViewBag.PaymentAmount = sortOrder == "amt_asc" ? "amt_desc" : "amt_asc";
+                 ViewBag.FacultyName = sortOrder == "fname_asc" ? "fname_desc" : "fname_asc";
+                  ViewBag.IssuedDate = sortOrder == "date_asc" ? "date_desc" : "date_asc";
+
+                var students = from s in studentContext
+                               select s;
+
+
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    students = students.Where(s => s.Student.Name.Contains(searchString)
+                                           || s.Payment.Type.Contains(searchString)
+                                           || s.Student.Address.Contains(searchString)
+                                           || s.Payment.Amount.ToString().Contains(searchString)
+                                           || s.Student.PhoneNo.ToString().Contains(searchString)
+                                           || s.Faculty.Name.Contains(searchString)
+                                           || s.IssuedDate.ToString().Contains(searchString));
+                }
+                switch (sortOrder)
+                {
+                    case "studentname_desc":
+                        students = students.OrderByDescending(s => s.Student.Name);
+                        break;
+                    case "fname_desc":
+                        students = students.OrderByDescending(s => s.Faculty.Name);
+                        break;
+                    case "fname_asc":
+                        students = students.OrderBy(s => s.Faculty.Name);
+                        break;
+                    case "amt_desc":
+                        students = students.OrderByDescending(s => s.Payment.Amount);
+                        break;
+                    case "amt_asc":
+                        students = students.OrderBy(s => s.Payment.Amount);
+                        break;
+                    case "addressname_desc":
+                        students = students.OrderByDescending(s => s.Student.Address);
+                        break;
+                    case "addressname_asc":
+                        students = students.OrderBy(s => s.Student.Address);
+                        break;
+                    case "type_desc":
+                        students = students.OrderByDescending(s => s.Payment.Type);
+                        break;
+                    case "type_asc":
+                        students = students.OrderBy(s => s.Payment.Type);
+                        break;
+                    case "phonenoname_desc":
+                        students = students.OrderByDescending(s => s.Student.PhoneNo);
+                        break;
+                    case "phonenoname_asc":
+                        students = students.OrderBy(s => s.Student.PhoneNo);
+                        break;
+                    case "date_desc":
+                        students = students.OrderByDescending(s => s.IssuedDate);
+                        break;
+                    case "date_asc":
+                        students = students.OrderBy(s => s.IssuedDate);
+                        break;
+
+
+                    default:
+                        students = students.OrderBy(s => s.Student.Name);
+                        break;
+                }
+                return View(students);
+            
+         //   return View(await studentContext.ToListAsync());
         }
 
         // GET: Registrations/Details/5
